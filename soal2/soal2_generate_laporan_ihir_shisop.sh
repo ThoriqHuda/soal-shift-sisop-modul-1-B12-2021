@@ -44,15 +44,15 @@ for (nama in iter) {
 printf "\nTipe segmen customer yang penjualannya paling sedikit adalah "
 if (consumer < corporate) {
    if (consumer < homeoffice)
-      printf "%s dengan %d\n", "Customer", consumer
+      printf "%s dengan %d transaksi.\n", "Customer", consumer
    else
-      printf "%s dengan %d\n", "Home Office", homeoffice
+      printf "%s dengan %d transaksi.\n", "Home Office", homeoffice
 }
 else {
    if (corporate < homeoffice)
-      printf "%s dengan %d\n", "Corporate", corporate
+      printf "%s dengan %d transaksi.\n", "Corporate", corporate
    else
-      printf "%s dengan %d\n", "Home Office", homeoffice
+      printf "%s dengan %d transaksi.\n", "Home Office", homeoffice
 }
 #---------------
 
@@ -69,4 +69,4 @@ printf "\nWilayah bagian (region) yang memiliki total keuntungan (profit) yang p
 
 }
 
-' /home/han/Downloads/Laporan-TokoShiSop.tsv > hasil.txt
+' /home/zea/Downloads/Laporan-TokoShiSop.tsv > hasil.txt
