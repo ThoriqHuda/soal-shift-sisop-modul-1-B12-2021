@@ -10,7 +10,7 @@ max_idx=$1
 #---------------
 
 # Sub Soal B
-{if ($10=="Albuquerque" && $2~"2017") {iter[$7]++}}
+{if ($10=="Albuquerque" && $2~"-2017-") {iter[$7]++}}
 #---------------
 
 # Sub Soal C
