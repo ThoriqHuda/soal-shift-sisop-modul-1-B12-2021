@@ -1,4 +1,5 @@
 #!/bin/bash
+#wm
 
 file_used="/home/han/Downloads/syslog.log"
 
