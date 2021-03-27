@@ -31,3 +31,4 @@ max_PP
 ### d. Region yang memiliki total keuntungan paling sedikit
 
 ## Soal 3
+cobabdwbdw
