@@ -1,6 +1,133 @@
 # Laporan Penjelasan dan Penyelesaian Soal
 
 ## Soal 1
+### 1.d
+Mencari jumlah kemunculan setiap jenis pesan error.\
+Menggunakan regex untuk membagi file syslog.log 
+```bash
+regex="(ERROR )(.*)(\ .*\))"
+```
+Di mana grup 1 adalah ERROR, grup 2 adalah pesan error, dan grup 3 adalah semua setelah pesan error<br><br> 
+
+```bash
+While read -r l
+	do
+	 global_rematch "$l" "$regex"
+	done < "$file_used"
+```
+Membaca setiap line dari syslog.log, dan menggunakannya beserta regex sebagai argument untuk fungsi global rematch.<br><br>
+
+```bash
+global_rematch(){
+	    local line=$1 regex=$2
+	    while [[ $line =~ $regex ]]; do
+	        if [[ ${BASH_REMATCH[2]} = "Ticket doesn't exist" ]]
+	        then
+	         idx="Ticket doesn\'t exist"
+	         ((map["$idx"]++))
+	        else
+	         ((map["${BASH_REMATCH[2]}"]++))
+	        fi
+	        line=${line#*"${BASH_REMATCH[0]}"}
+	    done
+	}
+
+```
+Fungsi ini Menggunakan associative array **map** untuk menghitung berapa kali sebuah pesan error muncul pada syslog.log.
+**BASH_REMATCH[2]** adalah grup 2 dari regex yaitu pesan error.\
+**map["${BASH_REMATCH[2]}"]++** berarti jumlah kemunculan pesan error yang ada di line ditambah 1\
+Menambahkan **map["${BASH_REMATCH[2]}"]** untuk setiap line<br/><br/>
+
+
+```bash
+        if [[ ${BASH_REMATCH[2]} = "Ticket doesn't exist" ]]
+        then
+         idx="Ticket doesn\'t exist"
+         ((map["$idx"]++))
+```
+Bagian ini berjalan jika pesan error adalah “Ticket doesn’t exist”. Karakter ’ pada kata “doesn’t” dapat menyebabkan error, sehingga pesan error diganti menjadi tidak mengandung karakter ‘<br><br>
+```bash
+echo "Error,Count" > error_message.csv
+	for i in "${!map[@]}"
+	do
+	 echo "${map[$i]},$i"
+	done | sort -nr | while read -r ll
+	do
+	 global_rematch_again "$ll" "$regex2"
+	done >> error_message.csv
+```
+Mengoutput pesan dan jumlah dalam format **jumlah,pesan**. Menggunakan format ini agar bisa di sort menggunakan jumlah muncul pesannya denagn **sort -nr**. Setelah itu melakukan output ulang dengan menggunakan fungsi **global_rematch_again**. Menggunakan argument line dan **regex2** yaitu
+```bash
+regex2="(.*)(,)(.*)
+```
+Dimana grup 1 adalah semua sebelum koma yaitu jumlah, grup 2 adalah koma, dan grup 3 adalah semua setelahnya yaitu pesan.<br><br>
+```bash
+global_rematch_again(){
+	    local line=$1 regex=$2
+	    while [[ $line =~ $regex ]]; do
+	        echo "${BASH_REMATCH[3]},${BASH_REMATCH[1]}"
+	        line=${line#*"${BASH_REMATCH[0]}"}
+	    done
+	}
+```
+Fungsi ini mengoutput ulang dengan format **pesan,jumlah**.\
+Setelah itu output diappend ke file **error_message.csv**
+<br><br>
+### 1.e
+Mencari jumlah kemunculan ERROR dan INFO dari setiap user.
+File syslog.log dibagi menggunakan regex
+```bash
+regex3="(ERROR|INFO)(.*\()(.*)(\))"
+```
+Dimana grup 1 adalah ERROR atau INFO yaitu jenis log, grup 2 adalah semua sebelum dan juga karakter “(“, grup 3 adalah semua diantara karakter “(“ dan “)” yaitu adalah username, dan grup 4 adalah karakter “)”.<br><br>
+```bash
+while read -r lll
+	do
+	 global_rematch2 "$lll" "$regex3"
+	done < "$file_used"
+ ```
+Membaca syslog.log per line dan menggunakannya beserta **regex3** sebagai argument untuk fungsi **global_rematch2** 
+```bash
+global_rematch2(){
+	    local line=$1 regex=$2
+	    while [[ $line =~ $regex ]]; do
+	        if [[ ${BASH_REMATCH[1]} = "ERROR" ]]
+	        then
+	        ((err["${BASH_REMATCH[3]}"]++))
+	        else
+	        ((info["${BASH_REMATCH[3]}"]++))
+	        fi
+	        line=${line#*"${BASH_REMATCH[0]}"}
+	    done
+	}
+
+``` 
+Menggunakan Associative array **err** dan **info** untuk menghitung jumlah kemunculan jenis log untuk setiap user.
+Jika jenis log adalah ERROR maka jumlah error untuk user tersebut ditambah 1 menggunakan **err["${BASH_REMATCH[3]}"]++**. Jika jenis log adalah info maka jumlah info user ditambah dengan **info["${BASH_REMATCH[3]}"]++**
+Setelah mendapatkan jumlah ERROR dan INFO untuk setiap user maka dioutput dengan :
+```bash
+echo "Username,INFO,ERROR" > user_statistic.csv
+	for i in "${!err[@]}"
+	do
+	
+
+	 if [[ ${err[$i]} -eq 0 ]]
+	 then
+	 ((err["$i"]=0))
+	 fi
+	
+
+	 if [[ ${info[$i]} -eq 0 ]]
+	 then
+	 ((info["$i"]=0))
+	 fi
+	
+
+	 echo "$i,${info[$i]},${err[$i]}"
+	done | sort -n >> user_statistic.csv
+
+```
+Mengoutput username dan jumlah ERROR dan INFO ke file **user_statistic.csv**. jika seorang user tidak pernah mendapatkan pesan ERROR atau INFO maka tidak akan ada outputnya di **user_statistic.csv**. Oleh karena itu dilakukan ```err["$i"]=0``` atau ```info["$i"]=0``` agar terdapat outputnya.
 
 ## Soal 2
 Menggunakan **awk** untuk mengecek tiap baris data.
