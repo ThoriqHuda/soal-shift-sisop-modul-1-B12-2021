@@ -285,7 +285,7 @@ Script menghasilkan file 'hasil.txt' menggunakan tanda ``` > ``` :
 
 ### a. 
 Langkah mendasar untuk menyelesaikan poin ini tentunya adalah dengan men-download file pada link secara berulang (dengan loop)
-```
+```bash
     if [[ $i -lt 10 ]]
     then 
         fname="Koleksi_0$i"
@@ -301,10 +301,10 @@ Langkah mendasar untuk menyelesaikan poin ini tentunya adalah dengan men-downloa
         wget -O "$fname" -a "foto.log" "$link"
     fi
 ```
-Dengan menggunakan command 'wget', kita dapat mendownload file pada link. Gunakan options '-a' untuk menyimpan log dari script dalam "foto.log"
+Dengan menggunakan command 'wget', kita dapat mendownload file pada link. Gunakan options '-a' untuk menyimpan log dari script dalam "foto.log". Untuk penggunaan argumen pada kode ini akan dipakai pada problem 3c sehingga tidak akan dibahas disini.
 
 Lalu, agar tidak ada image yang duplikat, lakukan pengecekan setelah berhasil men-download file pada langkah sebelumnya
-```
+```bash
     if [[ $i -ne 1 ]]
     then
         last_file="$( find -maxdepth 1 -type f -name $fname )"
@@ -329,4 +329,100 @@ Lalu, agar tidak ada image yang duplikat, lakukan pengecekan setelah berhasil me
     fi
 ```
 Kode diatas akan mengecek kembali dari awal apakah image yang baru saja di-download adalah duuplikat dengan mengeceknya satu per satu dengan command "diff". Ketika ditemukan, lakukan remove pada image yang baru saja di-download dengan command "rm". lalu kurangi counter (dalam kasus ini variabel i) dan batas atas counternya (variabel j).
-Kode - kode tersebut akan di loop dengan counter i (awalnya 1) dan batas atas j (awalnya 24)
+Kode - kode tersebut akan di loop dengan counter i (awalnya 1) dan batas atas j (awalnya 24).
+
+### b.
+Pada kasus yang kedua ini, kita membutuhkan bantuan dari kode pada kasus a untuk mendownload image kembali. Sehingga akan dieksekusi terlebih dahulu script soal3a.sh .
+```bash
+bash "soal3a.sh"
+```
+Lalu, kita tinggal memindahkan semua file yang diminta dengan menggunakan command "mv"
+```bash
+tanggal=$( date +"%d-%m-%Y" )
+
+mkdir "$tanggal"
+
+home_dir="/home/han/PrakSis/P3"
+
+mv "foto.log" "$home_dir/$tanggal"
+
+i=1
+while [[ -e "Koleksi_0$i" || -e "Koleksi_$i" ]]
+do
+    if [[ $i -lt 10 ]]; then
+        mv "Koleksi_0$i" "$home_dir/$tanggal"
+    else
+        mv "Koleksi_$i" "$home_dir/$tanggal"
+    fi
+    i=$[$i+1]
+done
+```
+Command "mkdir" akan membuat directory sesuai dengan nama pada variabel 'tanggal'. Pindahkan foto.log kedalam directory tersebut. Dan terakhir, gunakan loop untuk memindahkan file yang telah di download kedalam directory yang baru saja dibuat.
+
+Agar kode dapat dieksekusi sesuai permintaan pada soal, kita menggunakan crontab
+```bash
+0 20 1-31/7,2-31/4 * * cd /home/han/PrakSis/P3 && bash soal3b.sh
+```
+0 20 menyatakan pukul 20.00, 1-31/7 menyatakan tiap hari ketujuh dimulai dari tanggal 1, dan 2-31/4 menyatakan tiap hari keempat dimulai dari tanggal 2.
+
+### c.
+Ide utama untuk menyelesaikan kasus ini adalah dengan menghitung jumlah folder yang berawalan "Kucing" dan "Kelinci".
+```bash
+kucing=$( ls | grep "Kucing" | wc -l)
+kelinci=$( ls | grep "Kelinci" | wc -l)
+```
+Command tersebut akan menghasilkan jumlah file pada directory yang mengandung kata "Kucing" dan "Kelinci" (Berhubung file yang memiliki kata tersebut hanya folder hasil eksekusi soal3c.sh sehingga kita dapat menggunakan grep).
+
+Ketika jumlah antara "Kucing" dan "Kelinci" sama, kode akan mendownload "Kucing" dan jika berbeda akan mendownload "Kelinci"
+```bash
+tanggal=$( date +"%d-%m-%Y" )
+if [[ $kucing -eq $kelinci ]] 
+then
+    mkdir "Kucing_$tanggal"
+    download_pict "https://loremflickr.com/320/240/kitten"
+    tipe="Kucing"
+else
+    mkdir "Kelinci_$tanggal"
+    download_pict "https://loremflickr.com/320/240/bunny"
+    tipe="Kelinci"
+fi
+```
+buat direktori, download, dan set variabel "tipe" (agar lebih mudah kedepannya) sesuai jumlah folder tersebut.
+
+Dan terakhir, lakukan hal yang sama seperti pada soal3b.sh, yaitu memindahkan file ke direktori yang telah dibuat.
+```bash
+home_dir="/home/han/PrakSis/P3"
+
+mv "foto.log" "$home_dir/${tipe}_$tanggal"
+
+i=1
+while [[ -e "Koleksi_0$i" || -e "Koleksi_$i" ]]
+do
+    if [[ $i -lt 10 ]]; then
+        mv "Koleksi_0$i" "$home_dir/${tipe}_$tanggal"
+    else
+        mv "Koleksi_$i" "$home_dir/${tipe}_$tanggal"
+    fi
+    i=$[$i+1]
+done
+```
+
+### d.
+Pada kasus 3d, kita diminta untuk melakukan zip pada folder - folder yang telah dibuat sebelumnya. Gunakan beberapa command berikut :
+```bash
+#!/bin/bash
+
+tanggal=$( date +"%m%d%Y" )
+
+all_dir=$( find -maxdepth 1 -type d | grep -o "[^.\/].*")
+
+zip "Koleksi.zip" -m -r $all_dir -P "$tanggal"
+```
+command pada variabel all_dir akan mengambil semua folder pada direktori sekarang. lalu gunakan command "zip" untuk melakukan zip kesemua folder itu sekaligus.
+
+### e.
+```bash
+0 7 * * 1-5 cd /home/han/PrakSis/P3/ && bash soal3d.sh
+0 18 * * 1-5 cd /home/han/PrakSis/P3/ && unzip -P $( date +"\%m\%d\%Y" ) "Koleksi.zip" && rm "Koleksi.zip"
+```
+0 7 dan 0 18 masing - masing menyatakan 07.00 dan 18.00, 1-5 menyatakan hari senin sampai jumat. Jalankan soal3d.sh pada crontab pertama dan gunakan command "unzip" untuk meng-unzip file zip yang telah dibuat. pilih option "-P password" agar dapat terbuka lalu hapus dengan command "rm" setelah berhasil di unzip.
