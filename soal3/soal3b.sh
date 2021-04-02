@@ -6,7 +6,7 @@ tanggal=$( date +"%d-%m-%Y" )
 
 mkdir "$tanggal"
 
-home_dir="/home/han/PrakSis/P3"
+home_dir="/home/han/Praktikum_1/soal3"
 
 mv "foto.log" "$home_dir/$tanggal"
 
