@@ -379,15 +379,66 @@ tanggal=$( date +"%d-%m-%Y" )
 if [[ $kucing -eq $kelinci ]] 
 then
     mkdir "Kucing_$tanggal"
-    download_pict "https://loremflickr.com/320/240/kitten"
     tipe="Kucing"
 else
     mkdir "Kelinci_$tanggal"
-    download_pict "https://loremflickr.com/320/240/bunny"
     tipe="Kelinci"
 fi
+download pict
 ```
 buat direktori, download, dan set variabel "tipe" (agar lebih mudah kedepannya) sesuai jumlah folder tersebut.
+
+fungsi download_pict akan mendownload Koleksi foto secara selang seling. fungsi ini mirip dengan soal 3a dalam proses pengecekan foto yang samanya.
+```bash
+download_pict(){
+i=1
+j=24
+
+while [ $i -lt $j ]
+do
+        
+     if [[ $i -lt 10 ]]
+     then 
+         fname="Koleksi_0$i"
+     else
+         fname="Koleksi_$i"
+     fi
+
+     if [[ $[$i % 2] -eq 0 ]]
+     then 
+         wget -O "$fname" -a "foto.log" "https://loremflickr.com/320/240/kitten"
+     else
+         wget -O "$fname" -a "foto.log" "https://loremflickr.com/320/240/bunny"
+     fi
+        
+     if [[ $i -ne 1 ]]
+     then
+         last_file="$( find -maxdepth 1 -type f -name $fname )"
+         all_files="$( find -maxdepth 1 -type f )"
+
+         for file in $all_files
+         do
+             if [[ $file != $last_file ]]
+             then
+                 if diff "$file" "$last_file" > /dev/null
+                 then
+                     #echo "hapus $last_file"wm
+                     rm "$last_file"
+                      
+                     i=$[$i-1]
+                     j=$[$j-1]
+
+                     break
+                 fi
+             fi
+         done
+     fi
+     # Increementwm
+     i=$[$i+1]
+done
+}
+```
+perbedaannya terletak pada proses download yang dilakukan secara selang seling.
 
 Dan terakhir, lakukan hal yang sama seperti pada soal3b.sh, yaitu memindahkan file ke direktori yang telah dibuat.
 ```bash
