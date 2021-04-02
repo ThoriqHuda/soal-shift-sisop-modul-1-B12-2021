@@ -295,6 +295,9 @@ Script menghasilkan file 'hasil.txt' menggunakan tanda ``` > ``` :
 ' /home/han/Downloads/Laporan-TokoShiSop.tsv > hasil.txt
 ``` 
 ![ssno2](https://i.imgur.com/ybflpMa.png)
+
+Tidak ada kendala pada nomor ini
+
 ## Soal 3
 
 ### a. 
