@@ -368,6 +368,10 @@ Agar kode dapat dieksekusi sesuai permintaan pada soal, kita menggunakan crontab
 ```
 0 20 menyatakan pukul 20.00, 1-31/7 menyatakan tiap hari ketujuh dimulai dari tanggal 1, dan 2-31/4 menyatakan tiap hari keempat dimulai dari tanggal 2.
 
+Berikut hasil run kode tersebut
+![pict2](https://i.imgur.com/aDhKbge.png)
+Terlihat folder yang berisi tanggal di path direktori di bagian atas
+
 ### c.
 Ide utama untuk menyelesaikan kasus ini adalah dengan menghitung jumlah folder yang berawalan "Kucing" dan "Kelinci".
 ```bash
@@ -460,6 +464,8 @@ do
     i=$[$i+1]
 done
 ```
+berikut hasil run 2x dari kode tersebut
+![pict3](https://i.imgur.com/M9EFmUZ.png)
 
 ### d.
 Pada kasus 3d, kita diminta untuk melakukan zip pada folder - folder yang telah dibuat sebelumnya. Gunakan beberapa command berikut :
@@ -473,6 +479,9 @@ all_dir=$( find -maxdepth 1 -type d | grep -o "[^.\/].*")
 zip "Koleksi.zip" -m -r $all_dir -P "$tanggal"
 ```
 command pada variabel all_dir akan mengambil semua folder pada direktori sekarang. lalu gunakan command "zip" untuk melakukan zip kesemua folder itu sekaligus.
+
+berikut hasil run dari kode tersebut
+![pict4](https://i.imgur.com/LwV2rN3.png)
 
 ### e.
 ```bash
