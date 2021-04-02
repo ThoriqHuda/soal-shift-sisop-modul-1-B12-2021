@@ -75,6 +75,12 @@ Setelah itu output diappend ke file **error_message.csv**
 <br><br>
 berikut adalah isi dari **error_message.csv**
 ![1d](https://i.imgur.com/uCpLvR6.png)
+
+Kendala :
+1. Output yang terbalik
+2. mencari regex yang sesuai
+3. Penggunaan bash rematch
+
 ### 1.e
 Mencari jumlah kemunculan ERROR dan INFO dari setiap user.
 File syslog.log dibagi menggunakan regex
@@ -132,6 +138,10 @@ echo "Username,INFO,ERROR" > user_statistic.csv
 Mengoutput username dan jumlah ERROR dan INFO ke file **user_statistic.csv**. jika seorang user tidak pernah mendapatkan pesan ERROR atau INFO maka tidak akan ada outputnya di **user_statistic.csv**. Oleh karena itu dilakukan ```err["$i"]=0``` atau ```info["$i"]=0``` agar terdapat outputnya.<br><br>
 berikut adalah isi dari **user_statistic.csv**\
 ![1e](https://i.imgur.com/LdFtOZv.png)
+
+Kendala :
+1. Mencari regex yang sesuai
+2. Penggunaan bash rematch
 
 ## Soal 2
 Menggunakan **awk** untuk mengecek tiap baris data.
