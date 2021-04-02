@@ -73,6 +73,8 @@ global_rematch_again(){
 Fungsi ini mengoutput ulang dengan format **pesan,jumlah**.\
 Setelah itu output diappend ke file **error_message.csv**
 <br><br>
+berikut adalah screenshot dari **error_message.csv**
+![1d](https://i.imgur.com/nR8KBEj.png)
 ### 1.e
 Mencari jumlah kemunculan ERROR dan INFO dari setiap user.
 File syslog.log dibagi menggunakan regex
@@ -127,7 +129,9 @@ echo "Username,INFO,ERROR" > user_statistic.csv
 	done | sort -n >> user_statistic.csv
 
 ```
-Mengoutput username dan jumlah ERROR dan INFO ke file **user_statistic.csv**. jika seorang user tidak pernah mendapatkan pesan ERROR atau INFO maka tidak akan ada outputnya di **user_statistic.csv**. Oleh karena itu dilakukan ```err["$i"]=0``` atau ```info["$i"]=0``` agar terdapat outputnya.
+Mengoutput username dan jumlah ERROR dan INFO ke file **user_statistic.csv**. jika seorang user tidak pernah mendapatkan pesan ERROR atau INFO maka tidak akan ada outputnya di **user_statistic.csv**. Oleh karena itu dilakukan ```err["$i"]=0``` atau ```info["$i"]=0``` agar terdapat outputnya.<br><br>
+berikut adalah screenshot dari **user_statistic.csv**\
+![1e](https://i.imgur.com/8TanrWS.png)
 
 ## Soal 2
 Menggunakan **awk** untuk mengecek tiap baris data.
