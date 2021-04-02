@@ -131,7 +131,7 @@ Mengoutput username dan jumlah ERROR dan INFO ke file **user_statistic.csv**. ji
 
 ## Soal 2
 Menggunakan **awk** untuk mengecek tiap baris data.
-```
+```bash
 #!/bin/bash
 awk '
 BEGIN {FS="\t"}
@@ -142,7 +142,7 @@ FS adalah field separator, field dipisahkan dengan ```\t``` tab
 Membandingkan profit percentage dengan profit percentage baris selanjutnya, lalu simpan Row ID nya. 
 
 Membandingkan profit percentage dengan profit percentage beris selanjutnya:
-```
+```bash
 {if (max_PP<=$21/($18-$21)*100) {
 ```
 ```max_PP``` adalah variabel untuk menyimpan profit percentage terbesar.\
@@ -150,7 +150,7 @@ Membandingkan profit percentage dengan profit percentage beris selanjutnya:
 ```$18``` untuk mengakses kolom sales. 
 
 Jika profit percentage baris selanjutnya lebih besar, maka max_PP berubah menjadi profit percentage baris tersebut dan Row ID-nya disimpan:
-```
+```bash
 max_PP=$21/($18-$21)*100
 max_idx=$1
 }}
@@ -159,14 +159,14 @@ max_idx=$1
 ```$1``` untuk mengakses kolom Row ID. 
 
 Format untuk men-display hasil:
-```
+```bash
 {
 printf "Transaksi terakhir dengan profit percentage terbesar yaitu %d dengan
 persentase %.2f%%.\n", max_idx, max_PP
 ```
 
 Hasilnya adalah seperti berikut
-```
+```bash
 Transaksi terakhir dengan profit percentage terbesar yaitu 9952 dengan persentase 100.00%.
 ```
 
@@ -174,7 +174,7 @@ Transaksi terakhir dengan profit percentage terbesar yaitu 9952 dengan persentas
 Mencari customer yang memiliki transaksi tahun 2017 dan di kota Albuquerque, lalu simpan nama customernya. 
 
 Cari 'Albuquerque' di kolom City dan '-2017-' di kolom Order ID, lalu simpan nama customernya di array:
-```
+```bash
 {if ($10=="Albuquerque" && $2~"-2017-") {iter[$7]++}}
 ```
 ```$10=="Albuquerque"``` untuk mencari baris yang terdapat 'Albuquerque' dari $10 (kolom City).\
@@ -182,7 +182,7 @@ Cari 'Albuquerque' di kolom City dan '-2017-' di kolom Order ID, lalu simpan nam
 ```{iter[$7]++}``` untuk menyimpan $7 (kolom Customer Name) yang memenuhi kondisi diatas sebagai index di array. 
 
 Format untuk men-display hasil:
-```
+```bash
 printf "\nDaftar nama customer di Albuquerque pada tahun 2017 antara lain:\n"
 for (nama in iter) {
   printf "%s\n", nama
@@ -191,7 +191,7 @@ for (nama in iter) {
 ```for (nama in iter)``` untuk mengiterasi semua index di array. 
 
 Hasilnya adalah seperti berikut
-```
+```bash
 Daftar nama customer di Albuquerque pada tahun 2017 antara lain:
 Benjamin Farhat
 David Wiener
@@ -200,7 +200,7 @@ Michelle Lonsdale
 
 ### c. Segment customer yang jumlah transaksinya paling sedikit
 Menghitung jumlah transaksi tiap segment customer, lalu dibandingkan untuk dicari yang paling sedikit:
-```
+```bash
 {
 if ($8=="Consumer") consumer+=1
 else if ($8=="Corporate") corporate+=1
@@ -210,7 +210,7 @@ else if ($8=="Home Office") homeoffice+=1
 Jika pada $8 (kolom Segment) terdapat 'Consumer', maka value dari variabel consumer akan bertambah satu, dan seterusnya sesuai dengan segment dan variabelnya. 
 
 Format untuk men-display hasil:
-```
+```bash
 printf "\nTipe segmen customer yang penjualannya paling sedikit adalah "
 if (consumer < corporate {
   if (consumer < homeoffice)
@@ -236,20 +236,20 @@ Tipe segmen customer yang penjualannya paling sedikit adalah Home Office dengan 
 Menghitung profit dari tiap region, lalu dibandingkan untuk dicari yang paling dikit. 
 
 Mencari 'West' atau 'East' atau 'South' atau 'Central' di $13 (kolom Region):
-```
+```bash
 {
 if ($13 == "West" || $13 == "East" || $13 == "South || $13 == "Central")
 ```
 
 Disimpan di dalam array:
-```
+```bash
 array[$13]+=$21
 }
 ```
 Index array tersebut adalah Region ($13), lalu profit tiap baris ($21) akan ditambahkan di Region yang sesuai. 
 
 Format untuk men-display hasil:
-```
+```bash
 min_profit=9999999
 for (i in array) {
   if (min_profit > array[i]) {
@@ -277,7 +277,7 @@ END
 ```
 ### e. File.txt
 Script menghasilkan file 'hasil.txt' menggunakan tanda ``` > ``` :
-```
+```bash
 ' /home/han/Downloads/Laporan-TokoShiSop.tsv > hasil.txt
 ``` 
 
