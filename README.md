@@ -334,6 +334,8 @@ Kode - kode tersebut akan di loop dengan counter i (awalnya 1) dan batas atas j 
 hasil run akan terlihat seperti berikut dan tak ada foto yang duplikat
 ![pict1](https://i.imgur.com/zhNPYtx.png)
 
+terdapat sebuah kendala, yaitu File duplikat sempat tidak terhapus
+
 ### b.
 Pada kasus yang kedua ini, kita membutuhkan bantuan dari kode pada kasus a untuk mendownload image kembali. Sehingga akan dieksekusi terlebih dahulu script soal3a.sh .
 ```bash
@@ -371,6 +373,10 @@ Agar kode dapat dieksekusi sesuai permintaan pada soal, kita menggunakan crontab
 Berikut hasil run kode tersebut
 ![pict2](https://i.imgur.com/aDhKbge.png)
 Terlihat folder yang berisi tanggal di path direktori di bagian atas
+
+Kendala pada kasus ini diantaranya :
+1. crontab gagal di jalankan otomatis
+2. proses mencoba - coba waktu crontab di crontab.guru
 
 ### c.
 Ide utama untuk menyelesaikan kasus ini adalah dengan menghitung jumlah folder yang berawalan "Kucing" dan "Kelinci".
@@ -467,6 +473,9 @@ done
 berikut hasil run 2x dari kode tersebut
 ![pict3](https://i.imgur.com/M9EFmUZ.png)
 
+Kendala :
+1. Pemahaman soal yang salah, awalnya "Bergantian antara download kucing dan kelinci di hari yang berbeda". Ternyata yang benar oleh penguji adalah "Mendownload foto kucing dan kelinci secara selang seling sehingga menghasilkan 12 foto kucing dan 11 foto kelinci"
+
 ### d.
 Pada kasus 3d, kita diminta untuk melakukan zip pada folder - folder yang telah dibuat sebelumnya. Gunakan beberapa command berikut :
 ```bash
@@ -483,9 +492,13 @@ command pada variabel all_dir akan mengambil semua folder pada direktori sekaran
 berikut hasil run dari kode tersebut
 ![pict4](https://i.imgur.com/LwV2rN3.png)
 
+Tidak ada kendala
+
 ### e.
 ```bash
 0 7 * * 1-5 cd /home/han/PrakSis/P3/ && bash soal3d.sh
 0 18 * * 1-5 cd /home/han/PrakSis/P3/ && unzip -P $( date +"\%m\%d\%Y" ) "Koleksi.zip" && rm "Koleksi.zip"
 ```
 0 7 dan 0 18 masing - masing menyatakan 07.00 dan 18.00, 1-5 menyatakan hari senin sampai jumat. Jalankan soal3d.sh pada crontab pertama dan gunakan command "unzip" untuk meng-unzip file zip yang telah dibuat. pilih option "-P password" agar dapat terbuka lalu hapus dengan command "rm" setelah berhasil di unzip.
+
+Kendala ada pada crontab yang gagal tereksekusi secara otomatis.
