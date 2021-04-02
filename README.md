@@ -331,6 +331,9 @@ Lalu, agar tidak ada image yang duplikat, lakukan pengecekan setelah berhasil me
 Kode diatas akan mengecek kembali dari awal apakah image yang baru saja di-download adalah duuplikat dengan mengeceknya satu per satu dengan command "diff". Ketika ditemukan, lakukan remove pada image yang baru saja di-download dengan command "rm". lalu kurangi counter (dalam kasus ini variabel i) dan batas atas counternya (variabel j).
 Kode - kode tersebut akan di loop dengan counter i (awalnya 1) dan batas atas j (awalnya 24).
 
+hasil run akan terlihat seperti berikut dan tak ada foto yang duplikat
+![pict1](https://i.imgur.com/zhNPYtx.png)
+
 ### b.
 Pada kasus yang kedua ini, kita membutuhkan bantuan dari kode pada kasus a untuk mendownload image kembali. Sehingga akan dieksekusi terlebih dahulu script soal3a.sh .
 ```bash
