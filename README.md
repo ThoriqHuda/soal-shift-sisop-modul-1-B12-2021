@@ -294,7 +294,7 @@ Script menghasilkan file 'hasil.txt' menggunakan tanda ``` > ``` :
 ```bash
 ' /home/han/Downloads/Laporan-TokoShiSop.tsv > hasil.txt
 ``` 
-
+![ssno2](https://i.imgur.com/ybflpMa.png)
 ## Soal 3
 
 ### a. 
