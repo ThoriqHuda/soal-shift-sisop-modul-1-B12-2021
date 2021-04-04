@@ -409,66 +409,23 @@ tanggal=$( date +"%d-%m-%Y" )
 if [[ $kucing -eq $kelinci ]] 
 then
     mkdir "Kucing_$tanggal"
+    download_pict "https://loremflickr.com/320/240/kitten"
     tipe="Kucing"
 else
     mkdir "Kelinci_$tanggal"
+    download_pict "https://loremflickr.com/320/240/bunny"
     tipe="Kelinci"
 fi
-download pict
 ```
 buat direktori, download, dan set variabel "tipe" (agar lebih mudah kedepannya) sesuai jumlah folder tersebut.
 
-fungsi download_pict akan mendownload Koleksi foto secara selang seling. fungsi ini mirip dengan soal 3a dalam proses pengecekan foto yang samanya.
+fungsi download_pict akan menjalankan perintah pada soal3a.sh untuk mendownload file.
 ```bash
 download_pict(){
-i=1
-j=24
-
-while [ $i -lt $j ]
-do
-        
-     if [[ $i -lt 10 ]]
-     then 
-         fname="Koleksi_0$i"
-     else
-         fname="Koleksi_$i"
-     fi
-
-     if [[ $[$i % 2] -eq 0 ]]
-     then 
-         wget -O "$fname" -a "foto.log" "https://loremflickr.com/320/240/kitten"
-     else
-         wget -O "$fname" -a "foto.log" "https://loremflickr.com/320/240/bunny"
-     fi
-        
-     if [[ $i -ne 1 ]]
-     then
-         last_file="$( find -maxdepth 1 -type f -name $fname )"
-         all_files="$( find -maxdepth 1 -type f )"
-
-         for file in $all_files
-         do
-             if [[ $file != $last_file ]]
-             then
-                 if diff "$file" "$last_file" > /dev/null
-                 then
-                     #echo "hapus $last_file"wm
-                     rm "$last_file"
-                      
-                     i=$[$i-1]
-                     j=$[$j-1]
-
-                     break
-                 fi
-             fi
-         done
-     fi
-     # Increementwm
-     i=$[$i+1]
-done
+    link=$1
+    bash soal3a.sh $link
 }
 ```
-perbedaannya terletak pada proses download yang dilakukan secara selang seling.
 
 Dan terakhir, lakukan hal yang sama seperti pada soal3b.sh, yaitu memindahkan file ke direktori yang telah dibuat.
 ```bash
@@ -487,11 +444,11 @@ do
     i=$[$i+1]
 done
 ```
-berikut hasil run 2x dari kode tersebut
-![pict3](https://i.imgur.com/M9EFmUZ.png)
+berikut hasil run 2x dari kode tersebut di hari yg berbeda
+![pict3](https://i.imgur.com/1d7H6Gl.png)
 
 Kendala :
-1. Pemahaman soal yang salah, awalnya "Bergantian antara download kucing dan kelinci di hari yang berbeda". Ternyata yang benar oleh penguji adalah "Mendownload foto kucing dan kelinci secara selang seling sehingga menghasilkan 12 foto kucing dan 11 foto kelinci"
+Tidak ada
 
 ### d.
 Pada kasus 3d, kita diminta untuk melakukan zip pada folder - folder yang telah dibuat sebelumnya. Gunakan beberapa command berikut :
